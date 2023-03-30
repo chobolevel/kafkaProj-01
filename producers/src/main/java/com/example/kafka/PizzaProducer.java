@@ -90,6 +90,7 @@ public class PizzaProducer {
         // 위와 아래는 같은 설정을 의미
         props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+//        props.setProperty(ProducerConfig.ACKS_CONFIG, "0");
         
         // KafkaProducer 객체 생성
         // 생성자 파라미터로 설정정보를 받음
