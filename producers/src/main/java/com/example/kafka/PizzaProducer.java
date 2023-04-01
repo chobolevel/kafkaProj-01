@@ -1,10 +1,7 @@
 package com.example.kafka;
 
 import com.github.javafaker.Faker;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +52,7 @@ public class PizzaProducer {
     }
 
     public static void sendMessage(KafkaProducer<String, String> kafkaProducer, ProducerRecord<String, String> producerRecord, HashMap<String, String> pMessage, boolean sync) {
+        // 비동기 전송
         if(!sync) {
             kafkaProducer.send(producerRecord, (metadata, exception) -> {
                 if(exception == null) {
@@ -65,6 +63,7 @@ public class PizzaProducer {
                 }
             });
         } else {
+            // 동기 전송
             try {
                 RecordMetadata metadata = kafkaProducer.send(producerRecord).get();
                 logger.info("sync message: " + pMessage.get("key") + " partition: " + metadata.partition() +
@@ -91,7 +90,12 @@ public class PizzaProducer {
         props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 //        props.setProperty(ProducerConfig.ACKS_CONFIG, "0");
-        
+//        props.setProperty(ProducerConfig.ACKS_CONFIG, "all");
+
+        // batch 설정
+        props.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, "32000");
+        props.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20");
+
         // KafkaProducer 객체 생성
         // 생성자 파라미터로 설정정보를 받음
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(props);
