@@ -89,19 +89,22 @@ public class PizzaProducer {
         // 위와 아래는 같은 설정을 의미
         props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        // acks 설정
 //        props.setProperty(ProducerConfig.ACKS_CONFIG, "0");
 //        props.setProperty(ProducerConfig.ACKS_CONFIG, "1");
 //        props.setProperty(ProducerConfig.ACKS_CONFIG, "all");
 
         // batch 설정
-        props.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, "32000");
-        props.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20");
+//        props.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, "32000");
+//        props.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20");
+
+        props.setProperty(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, "50000");
 
         // KafkaProducer 객체 생성
         // 생성자 파라미터로 설정정보를 받음
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(props);
 
-        sendPizzaMessage(kafkaProducer, topicName, -1, 10, 100, 100, true);
+        sendPizzaMessage(kafkaProducer, topicName, -1, 1000, 0, 0, false);
 
         kafkaProducer.close();
 
