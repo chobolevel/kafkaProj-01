@@ -1,7 +1,10 @@
 package com.example.kafka;
 
 import com.github.javafaker.Faker;
-import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +14,9 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-public class PizzaProducer {
+public class PizzaProducerCustomPartitioner {
 
-    private static final Logger logger = LoggerFactory.getLogger(PizzaProducer.class);
+    private static final Logger logger = LoggerFactory.getLogger(PizzaProducerCustomPartitioner.class);
 
     public static void sendPizzaMessage(KafkaProducer<String, String> kafkaProducer,
                                         String topicName,
@@ -78,39 +81,20 @@ public class PizzaProducer {
 
     public static void main(String[] args) {
 
-        String topicName = "pizza-topic";
-        // kafkaProducer 객체 Config 작성
-        // null: "hello world" 메시지 보낼 예정
+        String topicName = "pizza-topic-partitioner";
 
         Properties props = new Properties();
-        // bootstrap.servers, key.serializer.class, value.serializer.class
         props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        // props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-        // 위와 아래는 같은 설정을 의미
         props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        // acks 설정
-//        props.setProperty(ProducerConfig.ACKS_CONFIG, "0");
-//        props.setProperty(ProducerConfig.ACKS_CONFIG, "1");
-//        props.setProperty(ProducerConfig.ACKS_CONFIG, "all");
+        props.setProperty("custom.specialKey", "P001");
+        // 같은 설정
+        // 같은 패키지의 경우 클래스명만 넘겨도 됨
+        props.setProperty(ProducerConfig.PARTITIONER_CLASS_CONFIG, "com.example.kafka.CustomPartitioner");
 
-        // batch 설정
-//        props.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, "32000");
-//        props.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20");
-
-        // delevery.timeout.ms.config 설정
-//        props.setProperty(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, "50000");
-
-        props.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "6");
-        props.setProperty(ProducerConfig.ACKS_CONFIG, "0");
-        // enable.idempotence 명시적으로 설정시 설정이 밎지 않으면 config exception 발생
-        props.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
-
-        // KafkaProducer 객체 생성
-        // 생성자 파라미터로 설정정보를 받음
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(props);
 
-        sendPizzaMessage(kafkaProducer, topicName, -1, 1000, 0, 0, false);
+        sendPizzaMessage(kafkaProducer, topicName, -1, 100, 0, 0, true);
 
         kafkaProducer.close();
 
