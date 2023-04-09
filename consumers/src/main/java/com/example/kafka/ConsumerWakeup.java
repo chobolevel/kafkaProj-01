@@ -40,6 +40,7 @@ public class ConsumerWakeup {
                 kafkaConsumer.wakeup();
                 try {
                     // main Thread가 종료되기 현재 Thread 유지하기 위함
+                    // main Thread 종료되기 전에 실행되는 듯
                     mainThread.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
