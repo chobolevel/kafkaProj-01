@@ -19,7 +19,7 @@ public class ConsumerWakeup {
 
     public static void main(String[] args) {
 
-        String topicName = "simple-topic";
+        String topicName = "pizza-topic";
 
         Properties props = new Properties();
         props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -53,7 +53,7 @@ public class ConsumerWakeup {
                 // poll 메서드 수행은 Poll Thread가 수행 Main Thread X
                 ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(1000));
                 for(ConsumerRecord<String, String> record : records) {
-                    logger.info("record key: {}, record value: {}, partition: {}, record offset: {}", record.key(), record.value(), record.partition(), record.offset());
+                    logger.info("record key: {}, partition: {}, record offset: {}, record value: {} ", record.key(), record.partition(), record.offset(),  record.value());
                 }
             }
         } catch (WakeupException e) {
