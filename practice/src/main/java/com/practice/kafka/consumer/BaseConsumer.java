@@ -53,6 +53,7 @@ public class BaseConsumer<K extends Serializable, V extends Serializable> {
 
     private void processRecords(ConsumerRecords<K, V> records) {
         records.forEach(record -> processRecord(record));
+        // TODO: DB INSERT 로직
     }
 
 
