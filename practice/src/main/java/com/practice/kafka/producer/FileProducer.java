@@ -17,7 +17,7 @@ public class FileProducer {
 
     private static final Logger logger = LoggerFactory.getLogger(FileProducer.class);
 
-    private static final String filePath = "D:\\dev\\소스 코드\\kafka-core\\kafkaProj-01\\practice\\src\\main\\resources\\pizza_sample.txt";
+    private static final String filePath = "C:\\dev\\강의별 소스코드\\kafka-core\\kafkaProj-01\\practice\\src\\main\\resources\\pizza_append.txt";
 
     public static void main(String[] args) {
         

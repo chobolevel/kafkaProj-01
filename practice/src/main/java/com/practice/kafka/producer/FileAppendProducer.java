@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class FileAppendProducer {
 
-    private static final File file = new File("D:\\dev\\소스 코드\\kafka-core\\kafkaProj-01\\practice\\src\\main\\resources\\pizza_append.txt");
+    private static final File file = new File("C:\\dev\\강의별 소스코드\\kafka-core\\kafkaProj-01\\practice\\src\\main\\resources\\pizza_append.txt");
 
     public static void main(String[] args) {
 
