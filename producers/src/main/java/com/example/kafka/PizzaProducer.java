@@ -78,13 +78,13 @@ public class PizzaProducer {
 
     public static void main(String[] args) {
 
-        String topicName = "pizza-topic";
+        String topicName = "pizza-topic-p3r3";
         // kafkaProducer 객체 Config 작성
         // null: "hello world" 메시지 보낼 예정
 
         Properties props = new Properties();
         // bootstrap.servers, key.serializer.class, value.serializer.class
-        props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092, localhost:9093, localhost:9094");
         // props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         // 위와 아래는 같은 설정을 의미
         props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -101,16 +101,16 @@ public class PizzaProducer {
         // delevery.timeout.ms.config 설정
 //        props.setProperty(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, "50000");
 
-        props.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "6");
-        props.setProperty(ProducerConfig.ACKS_CONFIG, "0");
+//        props.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "6");
+//        props.setProperty(ProducerConfig.ACKS_CONFIG, "0");
         // enable.idempotence 명시적으로 설정시 설정이 밎지 않으면 config exception 발생
-        props.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+//        props.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
 
         // KafkaProducer 객체 생성
         // 생성자 파라미터로 설정정보를 받음
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(props);
 
-        sendPizzaMessage(kafkaProducer, topicName, -1, 500, 0, 0, true);
+        sendPizzaMessage(kafkaProducer, topicName, -1, 1000, 0, 0, false);
 
         kafkaProducer.close();
 
