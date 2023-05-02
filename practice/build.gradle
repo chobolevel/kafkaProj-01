@@ -16,6 +16,10 @@ dependencies {
     implementation 'com.github.javafaker:javafaker:1.0.2'
     // DB dependency 추가(mariadb로 진행함)
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.1'
+    // jackson-databind 라이브러리 추가
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+    // jackson-databind 라이브러리 java 8 LocalDateTime 직렬화 오류 해결 위한 추가 라이브러리
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
 }
 
 test {
