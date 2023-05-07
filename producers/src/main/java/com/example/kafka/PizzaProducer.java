@@ -78,7 +78,7 @@ public class PizzaProducer {
 
     public static void main(String[] args) {
 
-        String topicName = "pizza-topic-p3r3";
+        String topicName = "pizza-topic-stest";
         // kafkaProducer 객체 Config 작성
         // null: "hello world" 메시지 보낼 예정
 
